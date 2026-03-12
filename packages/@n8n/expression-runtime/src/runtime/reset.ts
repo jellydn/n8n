@@ -148,6 +148,45 @@ export function resetDataProxies(): void {
 	// TODO: Add other function properties as needed ($item, $vars, etc.)
 }
 
+// Matches initializeGlobalContext() lines 262-318 in packages/workflow/src/expression.ts
+const DENYLISTED_GLOBALS = [
+	'document',
+	'global',
+	'window',
+	'Window',
+	'globalThis',
+	'self',
+	'alert',
+	'prompt',
+	'confirm',
+	'eval',
+	'uneval',
+	'setTimeout',
+	'setInterval',
+	'setImmediate',
+	'clearImmediate',
+	'queueMicrotask',
+	'Function',
+	'require',
+	'module',
+	'Buffer',
+	'__dirname',
+	'__filename',
+	'fetch',
+	'XMLHttpRequest',
+	'Promise',
+	'Generator',
+	'GeneratorFunction',
+	'AsyncFunction',
+	'AsyncGenerator',
+	'AsyncGeneratorFunction',
+	'WebAssembly',
+	'Reflect',
+	'Proxy',
+	'escape',
+	'unescape',
+] as const;
+
 /**
  * Wire builtins onto __data so tournament's VariablePolyfill resolves them.
  *
@@ -159,45 +198,7 @@ export function resetDataProxies(): void {
  */
 function initializeBuiltins(data: Record<string, unknown>): void {
 	// ── Denylist: dangerous globals → empty objects ──
-	// Matches initializeGlobalContext() lines 262-318
-	const denylisted = [
-		'document',
-		'global',
-		'window',
-		'Window',
-		'globalThis',
-		'self',
-		'alert',
-		'prompt',
-		'confirm',
-		'eval',
-		'uneval',
-		'setTimeout',
-		'setInterval',
-		'setImmediate',
-		'clearImmediate',
-		'queueMicrotask',
-		'Function',
-		'require',
-		'module',
-		'Buffer',
-		'__dirname',
-		'__filename',
-		'fetch',
-		'XMLHttpRequest',
-		'Promise',
-		'Generator',
-		'GeneratorFunction',
-		'AsyncFunction',
-		'AsyncGenerator',
-		'AsyncGeneratorFunction',
-		'WebAssembly',
-		'Reflect',
-		'Proxy',
-		'escape',
-		'unescape',
-	];
-	for (const key of denylisted) {
+	for (const key of DENYLISTED_GLOBALS) {
 		data[key] = {};
 	}
 	data.__lookupGetter__ = undefined;
