@@ -1,0 +1,59 @@
+{
+  "name": "n8n",
+  "description": "Workflow Automation Tool",
+  "repository": "https://github.com/jellydn/n8n",
+  "keywords": ["n8n", "workflow", "automation"],
+  "website": "https://n8n.io",
+  "build": {
+    "docker": {
+      "web": "Dockerfile"
+    }
+  },
+  "start": {
+    "web": "node packages/cli/bin/n8n"
+  },
+  "env": {
+    "GENERIC_TIMEZONE": {
+      "description": "Timezone for n8n",
+      "value": "UTC"
+    },
+    "N8N_PROTOCOL": {
+      "description": "Protocol for n8n (http or https)",
+      "value": "https"
+    },
+    "WEBHOOK_URL": {
+      "description": "Public URL for webhooks",
+      "value": ""
+    },
+    "N8N_HOST": {
+      "description": "n8n host",
+      "value": "0.0.0.0"
+    },
+    "N8N_PORT": {
+      "description": "n8n port",
+      "value": "5678"
+    },
+    "EXECUTIONS_TIMEOUT": {
+      "description": "Max execution time in seconds (0 = no timeout)",
+      "value": "3600"
+    },
+    "EXECUTIONS_TIMEOUT_MAX": {
+      "description": "Max total execution time in seconds",
+      "value": "7200"
+    },
+    "QUEUE_BULL_REDIS": {
+      "description": "Redis URL for queue (optional, for scaling)",
+      "value": ""
+    }
+  },
+  "addons": [
+    "postgresql",
+    "redis"
+  ],
+  "formation": {
+    "web": {
+      "quantity": 1,
+      "size": "performance-m"
+    }
+  }
+}
